@@ -1,0 +1,76 @@
+---
+title: "ANOVA"
+author: "Michał Kędra"
+output: html_document
+---
+
+```{r, warning=FALSE, echo =FALSE, message =FALSE  }
+library(ggplot2)
+library(psych)     
+library(lawstat)   
+library(dunn.test)
+library(tseries)
+library(readxl)
+
+```
+
+### Seeing data
+
+
+```{r}
+births<-read_excel("births.xls")
+tail(births)
+
+```
+
+RACE (1 = white, 2 = black, 3 = other)
+
+```{r}
+str(births)
+```
+
+```{r}
+births$AGE[births$AGE < 23]<- 0
+births$AGE[births$AGE >= 23 ]<- 1
+```
+
+
+
+```{r}
+births$RACE<- factor(births$RACE, labels = c("white", "black", "other"))
+births$AGE<- factor(births$AGE, labels = c("0-23", "23+"))
+```
+
+
+```{r}
+ggplot(births)+ geom_boxplot(aes(births$RACE, births$BWT, color= births$RACE))
+```
+
+```{r, echo =FALSE}
+ggplot(births)+ geom_boxplot(aes(births$AGE, births$BWT, color= births$AGE))
+ggplot(births)+ geom_boxplot(aes(births$RACE, births$BWT, color= births$AGE))
+
+```
+
+
+
+```{r}
+describeBy(births$BWT, births$RACE, mat = TRUE)
+describeBy(births$BWT, births$AGE, mat = TRUE)
+```
+
+```{r}
+shapiro_pvalue<-function (x){
+  return (shapiro.test(x)$p.value)
+}
+tapply(births$BWT, births[,c(1,3)], shapiro_pvalue)
+
+```
+
+
+```{r}
+births_anova <- aov(BWT~AGE*RACE, data = births)
+summary(births_anova)
+```
+
+
