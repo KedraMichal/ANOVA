@@ -14,6 +14,12 @@ library(readxl)
 
 ```
 
+### Introduction
+ANOVA is a technique used to analise the differences among group means in a sample. For example, with ANOVA we can group people by age and see if mean of iq within all groups is equal. The null hypothesis for ANOVA is that all population means are exactly equal.
+
+we will check if birth weight is affected by age of the mother and race. Birth weight is the body weight of a baby at its birth. The average birth weight in babies of European heritage is 3.5 kilograms. But to begin, let's see, how data looks.
+
+
 ### Seeing data
 
 
@@ -22,8 +28,13 @@ births<-read_excel("births.xls")
 tail(births)
 
 ```
+As we can see we have many variables in data set, but we will focus on belove described ones:
 
-RACE (1 = white, 2 = black, 3 = other)
+* __BWT__ - birth weight in grams
+* __AGE__ -  mother age, when baby was borned
+* __RACE__ - skin color (1 = white, 2 = black, 3 = other)
+
+
 
 ```{r}
 str(births)
