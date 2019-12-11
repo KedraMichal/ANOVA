@@ -37,32 +37,53 @@ As we can see we have many variables in data set, but we will focus on belove de
 
 
 ```{r}
-str(births)
+summary(births$AGE)
 ```
 
+Now we will change __AGE__  to  a binary variable, 1 if mothers age is under or equal 23 and 0 if age is below 23.
 ```{r}
 births$AGE[births$AGE < 23]<- 0
 births$AGE[births$AGE >= 23 ]<- 1
 ```
 
+Let's see types of our variables
+```{r}
+str(births)
+```
 
-
+AGE and RACE are change to a categorical variable:
 ```{r}
 births$RACE<- factor(births$RACE, labels = c("white", "black", "other"))
 births$AGE<- factor(births$AGE, labels = c("0-23", "23+"))
 ```
 
+Boxplots are showing the distribution of __BWT__ (birth weight)  among groups.
 
+1. Grouped by race.
 ```{r}
 ggplot(births)+ geom_boxplot(aes(births$RACE, births$BWT, color= births$RACE))
 ```
 
-```{r, echo =FALSE}
+We can see slight diffrences beetwen groups
+
+2. Grouped by age.
+
+```{r, echo = FALSE}
 ggplot(births)+ geom_boxplot(aes(births$AGE, births$BWT, color= births$AGE))
+
+
+```
+
+As we can see  boxplots are almost same, expect min and max value
+
+3. Grouped by race and age.
+
+```{r, echo = FALSE}
 ggplot(births)+ geom_boxplot(aes(births$RACE, births$BWT, color= births$AGE))
 
 ```
 
+Age makes the biggest diffrnence among black race.
 
 
 ```{r}
